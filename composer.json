@@ -1,5 +1,5 @@
 {
-    "name": "besimple/soap",
+    "name": "prolix/besimple-soap",
     "type": "library",
     "description": "Build and consume SOAP and WSDL based web services",
     "keywords": ["soap"],
@@ -26,7 +26,7 @@
         "ass/xmlsecurity": "~1.0",
         "symfony/framework-bundle": "~2.0",
         "symfony/twig-bundle": "~2.0",
-        "zendframework/zend-mime": "2.1.*"
+        "zendframework/zend-mime": "~2.1"
     },
     "replace": {
         "besimple/soap-bundle": "self.version",
