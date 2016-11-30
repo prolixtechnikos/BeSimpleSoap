@@ -142,12 +142,27 @@ class BeSimpleSoapExtension extends Extension
         return sprintf('besimple.soap.classmap.%s', $client);
     }
 
-    private function createClient($client, ContainerBuilder $container)
+ private function createClient($client, ContainerBuilder $container)
     {
         $definition = new DefinitionDecorator('besimple.soap.client');
         $container->setDefinition(sprintf('besimple.soap.client.%s', $client), $definition);
+	$definition->setClass('BeSimple\SoapClient\SoapClient');
 
-        $definition->setFactoryService(sprintf('besimple.soap.client.builder.%s', $client));
+        if (method_exists($definition, 'setFactory')) {
+            // to be inlined in assetic.xml when dependency on Symfony DependencyInjection is bumped to 2.6
+            $definition->setFactory(
+		array(
+			new Reference(sprintf('besimple.soap.client.builder.%s', $client)),
+			'build'
+		)
+	    );
+        } else {
+            // to be removed when dependency on Symfony DependencyInjection is bumped to 2.6
+            $definition->setFactoryService(sprintf('besimple.soap.client.builder.%s', $client));
+            $definition->setFactoryMethod('build');
+        }
+
+//        $definition->setFactoryService(sprintf('besimple.soap.client.builder.%s', $client));
     }
 
     private function createWebServiceContext(array $config, ContainerBuilder $container)
